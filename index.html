@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+
+    <!-- Meta tags for SEO & Link Previews -->
+    <meta name="description" content="A special interactive message just for you.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Sacramento&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Canvas backgrounds -->
+    <canvas id="three-bg"></canvas>
+    <canvas id="rose-petals-canvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-dot"></div>
+
+    <!-- Floating Global Controls (Persistently available on all screens) -->
+    <div id="global-controls">
+        <button id="theme-toggle" class="control-btn" title="Toggle Theme" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <div class="music-control-container">
+            <button id="music-toggle" class="control-btn" title="Play Music" aria-label="Toggle Music">
+                <i class="fa-solid fa-music"></i>
+            </button>
+            <div class="volume-slider-wrapper">
+                <i class="fa-solid fa-volume-low"></i>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5">
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.codepen.io/4358584/An+unbreakable+bond.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Screen Container (Wizard interface) -->
+    <div id="screen-container">
+
+        <!-- Screen 1: Loading Screen -->
+        <section id="screen-1" class="screen active">
+            <div class="screen-content glass-card">
+                <div class="heart-pulse-wrapper">
+                    <div class="loader-heart"><i class="fa-solid fa-heart"></i></div>
+                </div>
+                <h2 class="loader-title">Hey, please give me a minute ❤️</h2>
+                <div class="loader-bar-bg">
+                    <div class="loader-bar"></div>
+                </div>
+                <button id="btn-1" class="glowing-btn hidden-action">
+                    <span>Continue</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 2: Question -->
+        <section id="screen-2" class="screen">
+            <div class="screen-content glass-card">
+                <div class="screen-icon"><i class="fa-solid fa-face-sad-cry"></i></div>
+                <h2 class="question-title">Before you leave, can I tell you something?</h2>
+                <button id="btn-2" class="glowing-btn">
+                    <span>Okay</span>
+                    <i class="fa-solid fa-comment-dots"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 3: Cuteness Meter -->
+        <section id="screen-3" class="screen">
+            <div class="screen-content glass-card">
+                <h2 class="screen-title-small">Cuteness Level Check</h2>
+                <div class="meter-ring">
+                    <svg class="ring-svg">
+                        <circle class="ring-track" cx="100" cy="100" r="80"></circle>
+                        <circle class="ring-progress" id="cuteness-progress-circle" cx="100" cy="100" r="80"></circle>
+                    </svg>
+                    <div class="meter-text">
+                        <span id="cuteness-percentage">0</span>%
+                    </div>
+                </div>
+                <h3 id="cuteness-msg" class="meter-msg hidden-action">You are officially too cute ❤️</h3>
+                <button id="btn-3" class="glowing-btn hidden-action">
+                    <span>Continue</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 4: Heart Taps -->
+        <section id="screen-4" class="screen">
+            <div class="screen-content glass-card wide-card">
+                <h2 class="screen-title-small">Tap each heart to reveal something</h2>
+                <div class="hearts-grid">
+                    <div class="heart-tap-card" data-index="0">
+                        <div class="heart-tap-icon"><i class="fa-solid fa-heart"></i></div>
+                        <p class="heart-tap-text">?</p>
+                    </div>
+                    <div class="heart-tap-card" data-index="1">
+                        <div class="heart-tap-icon"><i class="fa-solid fa-heart"></i></div>
+                        <p class="heart-tap-text">?</p>
+                    </div>
+                    <div class="heart-tap-card" data-index="2">
+                        <div class="heart-tap-icon"><i class="fa-solid fa-heart"></i></div>
+                        <p class="heart-tap-text">?</p>
+                    </div>
+                    <div class="heart-tap-card" data-index="3">
+                        <div class="heart-tap-icon"><i class="fa-solid fa-heart"></i></div>
+                        <p class="heart-tap-text">?</p>
+                    </div>
+                    <div class="heart-tap-card" data-index="4">
+                        <div class="heart-tap-icon"><i class="fa-solid fa-heart"></i></div>
+                        <p class="heart-tap-text">?</p>
+                    </div>
+                </div>
+                <button id="btn-4" class="glowing-btn hidden-action">
+                    <span>Continue</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 5: Envelope Note -->
+        <section id="screen-5" class="screen">
+            <div class="screen-content transparent-container">
+                <h2 class="screen-title-small">A little note for you 💌</h2>
+
+                <div class="envelope-wrapper" id="envelope-interactive-wrapper">
+                    <div class="envelope" id="apology-envelope">
+                        <div class="flap"></div>
+                        <div class="pocket"></div>
+                    </div>
+                </div>
+
+                <div class="envelope-hint" id="envelope-tip">
+                    <p><i class="fa-solid fa-hand-pointer"></i> Click the envelope to open it</p>
+                </div>
+
+                <!-- Fallback Button -->
+                <button id="fallback-open-btn" class="glowing-btn btn-secondary"
+                    style="margin-top: 10px; margin-bottom: 15px; display: inline-flex;">
+                    <span>Open Letter ❤️</span>
+                </button>
+            </div>
+
+            <!-- Centered Popup Letter Modal -->
+            <div id="apology-letter-modal" class="letter-modal-overlay">
+                <div class="letter-modal-card glass-card">
+                    <div class="letter-modal-header">
+                        <h2 class="screen-title-small" style="margin-bottom: 15px;">💌 A Little Note For You 💌</h2>
+                    </div>
+                    <div class="letter-modal-body letter-content"
+                        style="max-height: 48vh; overflow-y: auto; text-align: left; padding-right: 5px; margin-bottom: 20px;">
+                        <h3 class="letter-salutation" id="apology-letter-sal" style="opacity: 0;">Hey Cutie ❤️🥺,</h3>
+                        <p class="letter-body" id="apology-letter-body"></p>
+                        <p class="letter-signature" id="apology-letter-sig" style="opacity: 0;">Forever Yours
+                            💕<br><span class="signature-name"
+                                style="font-weight: bold; color: var(--accent);">Sarthak</span></p>
+                    </div>
+                    <div class="letter-modal-footer" style="text-align: center;">
+                        <button id="btn-5" class="glowing-btn hidden-action">
+                            <span>Continue ❤️</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 6: What I Love About You Cards -->
+        <section id="screen-6" class="screen">
+            <div class="screen-content wide-card flex-column">
+                <h2 class="screen-title-small" style="margin-bottom: 5px;">Just a few things I love about you ❤️</h2>
+                <p id="deck-subtitle" class="deck-subtitle" style="margin-bottom: 15px; font-size: 1.05rem; color: var(--text-muted); font-style: italic;">Tap the card for next ✨</p>
+
+                <!-- Card progress indicator -->
+                <div id="deck-progress" class="deck-progress-text">Card 1 of 10 ❤️</div>
+
+                <div class="card-deck-wrapper">
+                    <div class="card-deck" id="deck-container">
+                        <!-- Fallback cards in HTML -->
+                        <div class="deck-card active" data-index="0">
+                            <div class="deck-card-icon"><i class="fa-solid fa-heart"></i></div>
+                            <p class="deck-card-text">❤️ Your smile can make even my worst day better.</p>
+                            <span class="deck-card-hint"><i class="fa-solid fa-hand-pointer"></i> Tap anywhere on the card</span>
+                        </div>
+                        <div class="deck-card" data-index="1">
+                            <div class="deck-card-icon"><i class="fa-solid fa-face-smile"></i></div>
+                            <p class="deck-card-text">🥺 The way you care about people around you.</p>
+                        </div>
+                        <div class="deck-card" data-index="2">
+                            <div class="deck-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <p class="deck-card-text">✨ Your cute little habits that make you unique.</p>
+                        </div>
+                        <div class="deck-card" data-index="3">
+                            <div class="deck-card-icon"><i class="fa-solid fa-heart-circle-bolt"></i></div>
+                            <p class="deck-card-text">💕 The way you make ordinary moments feel special.</p>
+                        </div>
+                        <div class="deck-card" data-index="4">
+                            <div class="deck-card-icon"><i class="fa-solid fa-seedling"></i></div>
+                            <p class="deck-card-text">🌷 Your kindness and beautiful heart.</p>
+                        </div>
+                        <div class="deck-card" data-index="5">
+                            <div class="deck-card-icon"><i class="fa-solid fa-face-laugh-beam"></i></div>
+                            <p class="deck-card-text">😊 The way you make me laugh without even trying.</p>
+                        </div>
+                        <div class="deck-card" data-index="6">
+                            <div class="deck-card-icon"><i class="fa-solid fa-heart-circle-check"></i></div>
+                            <p class="deck-card-text">💖 Your personality is one of my favorite things about you.</p>
+                        </div>
+                        <div class="deck-card" data-index="7">
+                            <div class="deck-card-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+                            <p class="deck-card-text">🌸 The happiness you bring into my life.</p>
+                        </div>
+                        <div class="deck-card" data-index="8">
+                            <div class="deck-card-icon"><i class="fa-solid fa-dove"></i></div>
+                            <p class="deck-card-text">🦋 The way you stay on my mind all day.</p>
+                        </div>
+                        <div class="deck-card" data-index="9">
+                            <div class="deck-card-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                            <p class="deck-card-text">💌 Simply because you are you.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complete message -->
+                <p id="deck-complete-msg" class="deck-complete-text hidden-action">Thank you for reading these little things I love about you 🥺❤️</p>
+
+                <button id="btn-6" class="glowing-btn hidden-action">
+                    <span>Continue ❤️</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 7: Question Yes/No -->
+        <section id="screen-7" class="screen">
+            <div class="screen-content glass-card">
+                <div class="screen-icon"><i class="fa-solid fa-heart-circle-exclamation"></i></div>
+                <h2 class="question-title">Can I tell you one more thing?</h2>
+                <button id="btn-7" class="glowing-btn">
+                    <span>Yes</span>
+                    <i class="fa-solid fa-circle-check"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 8: Typewriter Animation -->
+        <section id="screen-8" class="screen">
+            <div class="screen-content glass-card">
+                <div class="typewriter-console">
+                    <p id="apology-typewriter" class="typewriter-text"></p>
+                </div>
+                <button id="btn-8" class="glowing-btn hidden-action">
+                    <span>Continue</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Screen 9: Thank You & Music control info -->
+        <section id="screen-9" class="screen">
+            <div class="screen-content glass-card">
+                <div class="glowing-heart-pulse-wrapper">
+                    <div class="giant-loader-heart"><i class="fa-solid fa-heart"></i></div>
+                </div>
+                <h2 class="question-title">Thank you for reading all of this ❤️</h2>
+                <p class="sound-prompt-text"></p>
+                <button id="btn-9" class="glowing-btn">
+                    <span>One Last Thing</span>
+                    <i class="fa-solid fa-star"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Final Screen: Apology Decision -->
+        <section id="screen-10" class="screen">
+            <div class="screen-content glass-card">
+                <div class="big-glowing-heart"><i class="fa-solid fa-heart"></i></div>
+                <h1 class="apology-final-msg">I'm really sorry.<br>Can we start again? ❤️</h1>
+                <div class="decision-buttons">
+                    <button id="forgive-btn" class="glowing-btn btn-success">
+                        <span>Forgive Me ❤️</span>
+                        <i class="fa-solid fa-face-smile-wink"></i>
+                    </button>
+                    <button id="restart-btn" class="glowing-btn btn-secondary">
+                        <span>Read Again</span>
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Forgiveness Celebration Overlay (Shown after clicking Forgive Me) -->
+    <div id="forgiveness-celebration">
+        <div class="celebration-content glass-card">
+            <div class="celebration-heart"><i class="fa-solid fa-face-kiss-wink-heart"></i></div>
+            <h1 class="celebration-title">Thank you! ❤️</h1>
+            <p class="celebration-subtitle">I promise to make it up to you and cherish you every single day!</p>
+            <button id="close-celebration-btn" class="glowing-btn">
+                <span>Close</span>
+                <i class="fa-solid fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- JS Libraries CDN -->
+    <!-- Three.js (Background Particles) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP (Core & TextPlugin) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+
+    <!-- Canvas Confetti (For celebrations) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
