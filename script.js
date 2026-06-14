@@ -7,7 +7,7 @@ const GF_NAME = "Ayushi";
 gsap.registerPlugin(TextPlugin);
 
 // Screen sequence tracker
-let currentScreen = 1;
+let currentScreen = 0;
 
 // Screen 4 (Hearts Tap) revealed states
 let heartsTappedCount = 0;
@@ -113,9 +113,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initMusic();
     initCursor();
     initScreenNavigation();
-    
-    // Kick off Screen 1 simulation
-    startScreen1Loader();
 });
 
 /* ==========================================================================
@@ -389,6 +386,29 @@ function initThreeBackground() {
 function initScreenNavigation() {
     const totalScreens = 10;
     
+    const btn0 = document.getElementById('btn-0');
+    if (btn0) {
+        btn0.addEventListener('click', (e) => {
+            playCuteTone('click');
+            
+            // Spawn heart sparkles
+            const rect = btn0.getBoundingClientRect();
+            const btnX = rect.left + rect.width / 2;
+            const btnY = rect.top + rect.height / 2;
+            createClickSparkles(e.clientX || btnX, e.clientY || btnY);
+            
+            // Try to autoplay background music when clicking check button
+            const audio = document.getElementById('bg-music');
+            if (audio && audio.paused) {
+                audio.play().then(() => {
+                    document.getElementById('music-toggle').querySelector('i').className = 'fa-solid fa-music fa-spin';
+                }).catch(e => console.log("Audio block: waiting"));
+            }
+            
+            transitionToScreen(1);
+        });
+    }
+    
     for (let i = 1; i <= totalScreens; i++) {
         const nextBtn = document.getElementById(`btn-${i}`);
         if (nextBtn) {
@@ -398,7 +418,7 @@ function initScreenNavigation() {
                 // If moving from Screen 1, check music autoplay block helper
                 if (i === 1) {
                     const audio = document.getElementById('bg-music');
-                    if (audio.paused) {
+                    if (audio && audio.paused) {
                         audio.play().then(() => {
                             document.getElementById('music-toggle').querySelector('i').className = 'fa-solid fa-music fa-spin';
                         }).catch(e => console.log("Audio block: waiting"));
@@ -443,7 +463,9 @@ function transitionToScreen(nextIndex) {
 }
 
 function triggerScreenAction(screenId) {
-    if (screenId === 3) {
+    if (screenId === 1) {
+        startScreen1Loader();
+    } else if (screenId === 3) {
         startCutenessMeter();
     } else if (screenId === 4) {
         initHeartsTapBoard();
@@ -933,11 +955,8 @@ function startFinalScreenEffects() {
         // Stop confetti loops
         if (finalConfettiInterval) clearInterval(finalConfettiInterval);
         
-        // Reset and route to screen 1
-        transitionToScreen(1);
-        setTimeout(() => {
-            startScreen1Loader();
-        }, 600);
+        // Reset and route to screen 0
+        transitionToScreen(0);
     });
     
     closeCelebrationBtn.addEventListener('click', () => {
