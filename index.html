@@ -57,8 +57,21 @@
     <!-- Screen Container (Wizard interface) -->
     <div id="screen-container">
 
+        <!-- Screen 0: Welcome Screen -->
+        <section id="screen-0" class="screen active">
+            <div class="screen-content glass-card welcome-card">
+                <img src="cute_chibi_girl.png" alt="Cute Illustration" class="welcome-chibi-img">
+                <h1 class="welcome-title">Hey Bhavi, Cutiepie ❤️</h1>
+                <p class="welcome-subtitle">Do you even know how cute you are? 🥺✨</p>
+                <button id="btn-0" class="glowing-btn pink-glowing-btn" style="margin-top: 15px;">
+                    <span>Let's Check 💖</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </div>
+        </section>
+
         <!-- Screen 1: Loading Screen -->
-        <section id="screen-1" class="screen active">
+        <section id="screen-1" class="screen">
             <div class="screen-content glass-card">
                 <div class="heart-pulse-wrapper">
                     <div class="loader-heart"><i class="fa-solid fa-heart"></i></div>
@@ -191,7 +204,9 @@
         <section id="screen-6" class="screen">
             <div class="screen-content wide-card flex-column">
                 <h2 class="screen-title-small" style="margin-bottom: 5px;">Just a few things I love about you ❤️</h2>
-                <p id="deck-subtitle" class="deck-subtitle" style="margin-bottom: 15px; font-size: 1.05rem; color: var(--text-muted); font-style: italic;">Tap the card for next ✨</p>
+                <p id="deck-subtitle" class="deck-subtitle"
+                    style="margin-bottom: 15px; font-size: 1.05rem; color: var(--text-muted); font-style: italic;">Tap
+                    the card for next ✨</p>
 
                 <!-- Card progress indicator -->
                 <div id="deck-progress" class="deck-progress-text">Card 1 of 10 ❤️</div>
@@ -202,7 +217,8 @@
                         <div class="deck-card active" data-index="0">
                             <div class="deck-card-icon"><i class="fa-solid fa-heart"></i></div>
                             <p class="deck-card-text">❤️ Your smile can make even my worst day better.</p>
-                            <span class="deck-card-hint"><i class="fa-solid fa-hand-pointer"></i> Tap anywhere on the card</span>
+                            <span class="deck-card-hint"><i class="fa-solid fa-hand-pointer"></i> Tap anywhere on the
+                                card</span>
                         </div>
                         <div class="deck-card" data-index="1">
                             <div class="deck-card-icon"><i class="fa-solid fa-face-smile"></i></div>
@@ -244,7 +260,8 @@
                 </div>
 
                 <!-- Complete message -->
-                <p id="deck-complete-msg" class="deck-complete-text hidden-action">Thank you for reading these little things I love about you 🥺❤️</p>
+                <p id="deck-complete-msg" class="deck-complete-text hidden-action">Thank you for reading these little
+                    things I love about you 🥺❤️</p>
 
                 <button id="btn-6" class="glowing-btn hidden-action">
                     <span>Continue ❤️</span>
